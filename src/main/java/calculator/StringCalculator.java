@@ -19,6 +19,9 @@ public class StringCalculator {
         String delimiter = DEFAULT_DELIMITER;
         String numbersText = input;
 
+        // 커스텀 구분자 형식이 잘못되었는지 검증
+        validateCustomDelimiterFormat(input);
+
         // 커스텀 구분자 패턴이 있는지 확인
         Matcher matcher = CUSTOM_DELIMITER_PATTERN.matcher(input);
         if (matcher.matches()) {
@@ -41,7 +44,18 @@ public class StringCalculator {
         return result;
     }
 
-    // 음수입력, 숫자가 아닌 값에 대한 예외처리
+    // 커스텀 구분자 형식 검증
+    private void validateCustomDelimiterFormat(String input) {
+        // "//"로 시작하는 경우 커스텀 구분자 형식이어야 함
+        if (input.startsWith("//")) {
+            // 형식이 틀린 경우 예외 발생
+            if (!CUSTOM_DELIMITER_PATTERN.matcher(input).matches()) {
+                throw new IllegalArgumentException("커스텀 구분자 형식이 올바르지 않습니다.");
+            }
+        }
+    }
+
+    // 음수 입력, 숫자가 아닌 값에 대한 예외 처리
     private int parseNumber(String number) {
         try {
             int value = Integer.parseInt(number);
