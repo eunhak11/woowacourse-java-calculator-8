@@ -29,17 +29,28 @@ public class StringCalculator {
 
         // 확정된 구분자로 문자열 분리
         String[] numbers = numbersText.split(delimiter);
-
-        // 숫자 배열의 합 계산
         return sum(numbers);
     }
 
-    // 문자열 배열의 원소들을 정수로 변환하여 합계를 구하는 메서드
+    // 문자열 배열의 원소들을 정수로 변환하여 합 계산
     private int sum(String[] numbers) {
         int result = 0;
         for (String number : numbers) {
-            result += Integer.parseInt(number);
+            result += parseNumber(number);
         }
         return result;
+    }
+
+    // 음수입력, 숫자가 아닌 값에 대한 예외처리
+    private int parseNumber(String number) {
+        try {
+            int value = Integer.parseInt(number);
+            if (value < 0) {
+                throw new IllegalArgumentException("음수는 입력할 수 없습니다.");
+            }
+            return value;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자가 아닌 값이 입력되었습니다: " + number);
+        }
     }
 }
